@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <title>JteSt</title>
+    <meta charset="utf-8">
+</head>
+<body>
+      
+    
+      
+      
+    <script>
+        function f1(a, b){
+            let newP = document.createElement("p");
+            newP.innerText = `Ulubioną liczbą osoby urodzonej w ${b} jest ${a}`;
+            document.body.appendChild(newP);
+        }
+        
+        function f2(){
+            let forgottenNumbers = [69,420,2137];
+            let num;
+            let year;
+            let ok = false;
+            while(true){
+                num = prompt("Podaj ulubioną liczbę");
+                for(let i = 0; i < forgottenNumbers.length; i++){
+                    if (num == forgottenNumbers[i]){
+                        console.log("Forgotten Number Detected");
+                        ok = false;
+                        break;
+                    }
+                    else{
+                        ok = true;
+                    }
+                    
+                }
+                if(ok){break;}
+            }
+            while(true){
+                year = prompt("Podaj rok urodzenia");
+                if(year > 1920 && year < 2020){
+                    break;
+                }
+            }
+            f1(num, year);
+        }
+        setInterval(f2, 60000);
+        
+    </script>
+</body>
+</html>
