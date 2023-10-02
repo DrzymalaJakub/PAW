@@ -5,8 +5,10 @@ const port = 3300;
 
 const server = http.createServer(function(req, res){
     let reqUrl = url.parse(req.url, true);
-    let fileName = "/" - reqUrl.pathname;
-    if(isNaN(fileName)){
+    let fileName = (reqUrl.pathname).replace("/", "");
+    console.log(`URL Recieved: ${fileName}`)
+    console.log(`URL: ${reqUrl.pathname}`)
+    if(fileName == ""){
         fileName = "index.html";
     }
     console.log(`File Recieved: ${fileName}`)
