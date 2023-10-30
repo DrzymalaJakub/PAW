@@ -2,6 +2,7 @@ const express = require("express");
 const url = require("url")
 const fs = require("fs")
 const stream = require("stream")
+const apiRouter = require("./routers/apiRouter")
 
 //for importing files
 const path = require("path")
@@ -11,6 +12,7 @@ const port = 3300
 
 app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
+app.use("/api", apiRouter)
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'))
