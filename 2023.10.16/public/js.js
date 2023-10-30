@@ -1,4 +1,4 @@
 document.getElementById("nosend").addEventListener("submit", (eve)=>{
     eve.preventDefault()
-    alert("UJGHFUGEUGFUEUAGJFYGU")
+    alert("Nie można wysłać wiadomości")
 });
