@@ -9,14 +9,15 @@
         <input type="submit" value="Wruć">
     </form>
     <h1>Kontakt</h1>
+
     <form action="/kontakt" id="nosend" method="post">
-        <input type="text" placeholder="Imię"><br>
-        <input type="email" placeholder="email"><br>
-        <select>
+        <input type="text" placeholder="Imię" name="name"><br>
+        <input type="email" placeholder="email" name="email"><br>
+        <select name="selection">
             <option>Tak</option>
             <option>Nie</option>
         </select><br>
-        <textarea></textarea><br>
+        <textarea name="content"></textarea><br>
         <input type="submit" value="Wyślij" >
     </form>
     <script src="/public/js.js"></script>

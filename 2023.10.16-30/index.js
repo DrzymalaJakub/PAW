@@ -28,7 +28,7 @@ app.get('/kontakt', (req, res) => {
 app.post('/kontakt', (req, res) => {
     let reqData = req.body
     console.log(reqData)
-    res.send(reqData)
+    res.redirect("/")
 })
 
 app.listen(port, () => {
