@@ -1,4 +1,5 @@
 const express = require("express")
+const mysql = require("mysql")
 const router = express.Router()
 
 const NOT_FOUND = {
@@ -6,7 +7,8 @@ const NOT_FOUND = {
     description: "Page Not Found",
 }
 
-const apiStudents = new Array()
+
+/*
 for(let i = 0; i < 10; i++){
     const _apiStudent = {
         id: i,
@@ -16,13 +18,6 @@ for(let i = 0; i < 10; i++){
     }
     apiStudents[i] = _apiStudent
 }
-const apiLinks = {}
-apiLinks[0] = {
-    url: "/api/students",
-    description: "list of all students",
-}
-
-const apiSubjects = new Array()
 for(let i = 0; i < 10; i++){
     const _apiSubject = {
         id: i,
@@ -30,7 +25,44 @@ for(let i = 0; i < 10; i++){
         hoursAWeek: 1+i,
     }
     apiSubjects[i] = _apiSubject
+}*/
+const dbConnection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'nodejsdb'
+})
+
+dbConnection.connect((err)=>{
+    if(err) throw err
+    console.log("Connected to database from apiRouter.js")
+})
+let apiStudents = new Array();
+dbConnection.query("SELECT * FROM `students` ", (err, result)=>{
+    if(err) throw err
+    console.log("Success - SELECT students")
+    apiStudents = result
+})
+let apiSubjects = new Array()
+dbConnection.query("SELECT * FROM `subjects` ", (err, result)=>{
+    if(err) throw err
+    console.log("Success - SELECT subjects")
+    apiSubjects = result
+})
+
+dbConnection.end((err)=>{
+    if(err) throw err
+    console.log("Disconnected from database at apiRouter.js")
+})
+
+
+
+const apiLinks = {}
+apiLinks[0] = {
+    url: "/api/students",
+    description: "list of all students",
 }
+
 apiLinks[1] = {
     url: "/api/subjects",
     description: "list of all subjects",
