@@ -22,7 +22,7 @@ apiLinks[0] = {
     description: "list of all students",
 }
 
-const apiSubjects = {}
+const apiSubjects = new Array()
 for(let i = 0; i < 10; i++){
     const _apiSubject = {
         id: i,
@@ -48,9 +48,28 @@ router.get("/subjects", (req, res)=>{
 })
 router.get("/students/:studentId", (req, res)=>{
     const x = apiStudents.filter((s)=> {
-        s.id === req.studentId
+        let reqId = req.params.studentId;
+        if(reqId.charAt(0) == ':'){
+            //console.log((reqId.charAt(0)) + " " + (reqId.charAt(0) == ':' )+ " " +( reqId.charAt(0) == ":"))
+            reqId = reqId.substring(1, reqId.length)
+        }
+        //console.log(s.id + " " + req.params.studentId)
+        //console.log(reqId)
+        return s.id == reqId
     })
-    res.json(NOT_FOUND)
+    console.log(x)
+    res.json(x.length != 1? NOT_FOUND : x)
+})
+router.get("/subjects/:subjectId", (req, res)=>{
+    const x = apiSubjects.filter((s)=> {
+        let reqId = req.params.subjectId;
+        if(reqId.charAt(0) == ':'){
+            reqId = reqId.substring(1, reqId.length)
+        }
+        return s.id == reqId
+    })
+    console.log(x)
+    res.json(x.length != 1? NOT_FOUND : x)
 })
 
 
