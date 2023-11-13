@@ -17,13 +17,6 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRouter)
 
-const dbConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'nodejsdb'
-})
-
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'))
@@ -38,27 +31,20 @@ app.get('/kontakt.html', (req, res) => {
 app.get('/kontakt', (req, res) => {
     res.sendFile(path.join(__dirname, 'kontakt.html'))
 })
-app.post('/kontakt', (req, res) => {
+app.post('/kontakt', async(req, res) => {
     let reqData = req.body
-    dbConnection.connect((err)=>{
-        if(err) throw err
-        console.log("Connected to database from index.js")
+    await prisma.contact.create({
+        data: {
+            name: reqData.name,
+            email: reqData.email,
+            selection: reqData.selection,
+            content: reqData.content,
+
+        },
     })
-    dbConnection.query(`INSERT INTO contact(name, email, selection, content) VALUES ("${reqData.name}", "${reqData.email}", "${reqData.selection}", "${reqData.content}")`, (err, result)=>{
-        if(err) throw err
-        console.log("Success - INSERT contact")
-    })
-    console.log(reqData)
-    
-    dbConnection.end((err)=>{
-        if(err) throw err
-        console.log("Disconnected from database at index.js")
-    })
+    console.log(`Added ${reqData.name}`)
     res.redirect("/")
 })
-
-
-
 
 
 app.listen(port, () => {
