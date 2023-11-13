@@ -2,7 +2,7 @@ const express = require("express");
 const url = require("url")
 const fs = require("fs")
 const stream = require("stream")
-const mysql = require("mysql")
+const mongodb = require("mongodb")
 const apiRouter = require("./routers/apiRouter")
 
 //for importing files
@@ -14,13 +14,6 @@ const port = 3300
 app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRouter)
-
-const dbConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'nodejsdb'
-})
 
 
 app.get('/', (req, res) => {
@@ -38,20 +31,6 @@ app.get('/kontakt', (req, res) => {
 })
 app.post('/kontakt', (req, res) => {
     let reqData = req.body
-    dbConnection.connect((err)=>{
-        if(err) throw err
-        console.log("Connected to database from index.js")
-    })
-    dbConnection.query(`INSERT INTO contact(name, email, selection, content) VALUES ("${reqData.name}", "${reqData.email}", "${reqData.selection}", "${reqData.content}")`, (err, result)=>{
-        if(err) throw err
-        console.log("Success - INSERT contact")
-    })
-    console.log(reqData)
-    
-    dbConnection.end((err)=>{
-        if(err) throw err
-        console.log("Disconnected from database at index.js")
-    })
     res.redirect("/")
 })
 
