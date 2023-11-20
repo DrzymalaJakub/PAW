@@ -11,6 +11,8 @@ const NOT_FOUND = {
 
 let apiStudents = new Array();
 let apiSubjects = new Array()
+let apiContacts = new Array()
+
 async function FetchData(){
     try {
         const db = await mongodb.MongoClient.connect(mgUri) //laczenie z serwerem
@@ -24,6 +26,12 @@ async function FetchData(){
         try {
             apiSubjects = await dbo.collection("nodejsdb").find({hours_a_week: {$gt: 0}}).toArray() //find students
             console.log(`fetched ${apiSubjects.toString()}`)
+        } catch (e) {
+            throw e
+        }
+        try {
+            apiContacts = await dbo.collection("nodejsdb").find({selection: {$gt: 0}}).toArray() //find students
+            console.log(`fetched ${apiContacts.toString()}`)
         } catch (e) {
             throw e
         }
@@ -56,16 +64,23 @@ apiLinks[1] = {
     url: "/api/subjects",
     description: "list of all subjects",
 }
+apiLinks[2] = {
+    url: "/api/messagses",
+    description: "list of all contacts",
+}
 
 FetchData().then()
 router.get("/", (req, res)=>{
-    res.send(apiLinks)
+    res.json(apiLinks)
 })
 router.get("/students", (req, res)=>{
     res.json(apiStudents)
 })
 router.get("/subjects", (req, res)=>{
     res.json(apiSubjects)
+})
+router.get("/messages", (req, res)=>{
+    res.json(apiContacts)
 })
 router.get("/students/:studentId", (req, res)=>{
     const x = apiStudents.filter((s)=> {

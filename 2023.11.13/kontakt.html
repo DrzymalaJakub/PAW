@@ -12,12 +12,12 @@
 
     <form action="/kontakt" id="nosend" method="post">
         <input type="text" placeholder="Imię" name="name"><br>
-        <input type="email" placeholder="email" name="email"><br>
-        <select name="selection">
+        <input type="email" placeholder="email" name="email" required><br>
+        <select name="selection" required>
             <option>Tak</option>
             <option>Nie</option>
         </select><br>
-        <textarea name="content"></textarea><br>
+        <textarea name="content" required></textarea><br>
         <input type="submit" value="Wyślij" >
     </form>
     <script src="/public/js.js"></script>
