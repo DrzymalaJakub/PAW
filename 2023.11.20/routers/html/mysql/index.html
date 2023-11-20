@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mysql contact form</title>
+</head>
+<body>
+    <form action="/connection" method="post">
+        <input type="text" placeholder="Host" name="host" value="localhost" required><br>
+        <input type="text" placeholder="User" name="user" value="root" required><br>
+        <input type="text" placeholder="Password" name="pass"><br>
+        <input type="text" placeholder="Database Name" name="name" required><br>
+        <input type="submit" value="Confirm" >
+    </form>
+
+    <form action="/select" method="post">
+        <input type="text" placeholder="SQL Query" name="query"required><br>
+        <input type="submit" value="Confirm" >
+    </form>
+</body>
+</html>
