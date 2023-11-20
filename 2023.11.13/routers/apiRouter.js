@@ -1,5 +1,6 @@
 const express = require("express")
-const mysql = require("mysql")
+const mongodb = require("mongodb")
+const mgUri = "mongodb+srv://jakubdrzymala:GVXSuTa36jPPslfy@cluster0.ie8yasy.mongodb.net/?retryWrites=true&w=majority"
 const router = express.Router()
 
 const NOT_FOUND = {
@@ -8,53 +9,41 @@ const NOT_FOUND = {
 }
 
 
-/*
-for(let i = 0; i < 10; i++){
-    const _apiStudent = {
-        id: i,
-        name: `imie_nr${i}`,
-        surname: `nazwisko_nr${i}`,
-        email: `student_nr${i}@gmail.net`,
-    }
-    apiStudents[i] = _apiStudent
-}
-for(let i = 0; i < 10; i++){
-    const _apiSubject = {
-        id: i,
-        name: `przedmiot_nr${i}`,
-        hoursAWeek: 1+i,
-    }
-    apiSubjects[i] = _apiSubject
-}*/
-const dbConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'nodejsdb'
-})
-
-dbConnection.connect((err)=>{
-    if(err) throw err
-    console.log("Connected to database from apiRouter.js")
-})
 let apiStudents = new Array();
-dbConnection.query("SELECT * FROM `students` ", (err, result)=>{
-    if(err) throw err
-    console.log("Success - SELECT students")
-    apiStudents = result
-})
 let apiSubjects = new Array()
-dbConnection.query("SELECT * FROM `subjects` ", (err, result)=>{
-    if(err) throw err
-    console.log("Success - SELECT subjects")
-    apiSubjects = result
-})
+async function FetchData(){
+    try {
+        const db = await mongodb.MongoClient.connect(mgUri) //laczenie z serwerem
+        const dbo = await db.db("nodejsdb") //laczenie z baza
+        try {
+            apiStudents = await dbo.collection("nodejsdb").find({surname: {$gt: ""}}).toArray() //find students
+            console.log(`fetched ${apiStudents.toString()}`)
+        } catch (e) {
+            throw e
+        }
+        try {
+            apiSubjects = await dbo.collection("nodejsdb").find({hours_a_week: {$gt: 0}}).toArray() //find students
+            console.log(`fetched ${apiSubjects.toString()}`)
+        } catch (e) {
+            throw e
+        }
+        /*
+        for(let i = 1; i < 11; i++){ //adding records
+            const newRow = { id: i, name: `przedmiot_nr${i}`, hours_a_week: i + 1} //new row
+            try {
+                await dbo.collection("nodejsdb").insertOne(newRow) //insert
+                console.log(`Added`)
+            } catch (e) {
+                throw e
+            }
+        }*/
 
-dbConnection.end((err)=>{
-    if(err) throw err
-    console.log("Disconnected from database at apiRouter.js")
-})
 
+        await db.close()
+    } catch (e) {
+        throw e
+    }
+}
 
 
 const apiLinks = {}
@@ -68,15 +57,15 @@ apiLinks[1] = {
     description: "list of all subjects",
 }
 
-
+FetchData().then()
 router.get("/", (req, res)=>{
     res.send(apiLinks)
 })
 router.get("/students", (req, res)=>{
-    res.send(apiStudents)
+    res.json(apiStudents)
 })
 router.get("/subjects", (req, res)=>{
-    res.send(apiSubjects)
+    res.json(apiSubjects)
 })
 router.get("/students/:studentId", (req, res)=>{
     const x = apiStudents.filter((s)=> {
