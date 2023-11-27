@@ -11,10 +11,17 @@
         <input type="text" placeholder="Password" name="pass"><br>
         <input type="text" placeholder="Database Name" name="database" required><br>
         <input type="submit" value="Confirm" >
-    </form>
+    </form><br><br>
 
     <form action="/select" method="post">
-        <input type="text" placeholder="SQL Query" name="query"required><br>
+        <input type="text" placeholder="SQL Query" name="query" required><br>
+        <input type="submit" value="Confirm" >
+    </form><br><br>
+    <form action="/insert" method="post">
+        <input type="text" placeholder="Column name" name="name" required><br>
+        <input type="text" placeholder="Column arguments. Separate values by your break word" name="nameArgs" required><br>
+        {<input type="text" name="breakWord" placeholder="Break word" value="br" required>}
+        <textarea placeholder="SQL. Separate values by your break word" name="rawQuery" required></textarea>
         <input type="submit" value="Confirm" >
     </form>
 </body>
