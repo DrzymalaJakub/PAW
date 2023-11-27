@@ -1,12 +1,9 @@
 const express = require("express")
 const mysql = require("mysql")
-const mongodb = require("mongodb");
 const path = require("path")
 
 const docPath = "/html/mysql/"
 const router = express.Router()
-let dbConnection;
-
 
 //Sending main form
 router.get("/", (req, res)=>{
@@ -17,33 +14,36 @@ router.get("/", (req, res)=>{
 router.post(`/connection`, (req, res)=>{
     const reqData = req.body
     console.log(`Given Credentials: ${JSON.stringify(reqData)}`)
-    dbConnection = mysql.createConnection({
+    module.exports = { dbConnection } = mysql.createConnection({
         host: reqData.host,
         user: reqData.user,
-        password: reqData.password,
-        database: reqData.database
+        password: reqData.pass,
+        database: reqData.database,
     })
+
     res.redirect("/")
 })
-if(dbConnection){ //when filled
     router.post(`/select`, (req, res)=>{
         const reqData = req.body
+        const dbConnection = require(`./mysql_router`)
+        let dbResult
         dbConnection.connect((err)=>{
             if(err) throw err
             console.log("Connected to database for SELECT")
-        })
-        dbConnection.query(`${reqData.query}`, (err, result)=>{
-            if(err) throw err
-            console.log(`Success - ${reqData.query}`)
-        })
-        console.log(reqData)
-
-        dbConnection.end((err)=>{
-            if(err) throw err
-            console.log("Disconnected from database for SELECT")
+            //console.log(dbConnection)
+            dbConnection.query(`${reqData.query}`, (err, result)=>{
+                if(err) throw err
+                console.log(`Success - ${reqData.query}:\n${JSON.stringify(result)}`)
+                dbResult = result
+                dbConnection.end((err)=>{
+                    if(err) throw err
+                    console.log("Disconnected from database for SELECT")
+                    res.json(dbResult)
+                })
+            })
         })
     })
-}
+
 
 
 
