@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import Navbar from "./components/Navbar";
 import Paragraph from "./components/Paragraph";
+import Clicker from "./components/Clicker";
 
 function App() {
   return (
@@ -9,6 +10,8 @@ function App() {
         <Navbar />
 
         <Paragraph content={"Hello World!"} />
+
+        <Clicker></Clicker>
     </>
   );
 }

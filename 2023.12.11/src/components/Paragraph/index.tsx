@@ -4,10 +4,10 @@ interface ParagraphProps{
     content: string
 }
 
-function Paragraph({content} : ParagraphProps): React.JSX.Element{
+function Paragraph(props : ParagraphProps): React.JSX.Element{ //props can be changed to {content} like in mjs
     return (
         <>
-            {content}
+            {props.content}
         </>
     )
 }
