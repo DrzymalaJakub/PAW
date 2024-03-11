@@ -1,0 +1,19 @@
+#app-nav{
+  position: absolute;
+  left: calc(100vw / 100);
+  width: calc(100vw / 20);
+  display: flex;
+  flex-wrap: wrap;
+  nav{
+    ul{
+      li{
+        a{
+          text-decoration: none;
+        }
+        a:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
